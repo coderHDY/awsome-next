@@ -11,8 +11,11 @@ export async function POST(request: Request) {
     .single();
 
   if (error || !data) {
-    return Response.json({ message: "登录失败" }, { status: 401 });
+    return Response.json(
+      { success: false, message: "登录失败" },
+      { status: 401 }
+    );
   }
 
-  return Response.json({ message: "登录成功", user: data });
+  return Response.json({ success: true, message: "登录成功", user: data });
 }
