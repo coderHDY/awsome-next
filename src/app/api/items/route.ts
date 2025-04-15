@@ -4,9 +4,9 @@
 const items = ["Apple", "Banana", "Orange"];
 
 export async function GET() {
-  return new Promise((resolve) => {
-    resolve(Response.json(items));
-  });
+  // sleep 2s
+  await new Promise((resolve) => setTimeout(resolve, 200));
+  return Response.json(items);
 }
 export async function POST(request: Request) {
   const body = await request.json();
