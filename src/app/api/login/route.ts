@@ -1,17 +1,18 @@
-// app/api/items/route.ts
-
-// 用来模拟数据库的内存数组（真实情况你应该用数据库）
+import { supabase } from "@/lib/supabase";
 export async function POST(request: Request) {
   const body = await request.json();
   const { username, password } = body;
   console.log(username, password);
+  const { data, error } = await supabase
+    .from("users")
+    .select("*")
+    .eq("username", username)
+    .eq("password", password)
+    .single();
 
-  // 设置token为随机数，放入jwt中
-  const token = "1234567890111111";
-  if (username === "admin" && password === "123456") {
-    // 模拟数据库查询，如果存在该用户，则返回token
-    return Response.json({ success: true, token });
+  if (error || !data) {
+    return Response.json({ message: "登录失败" }, { status: 401 });
   }
 
-  return Response.json({ success: false });
+  return Response.json({ message: "登录成功", user: data });
 }
